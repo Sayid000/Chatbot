@@ -31,5 +31,6 @@ public class SendController {
 
     @PostMapping("/callback")
     public void callback(@RequestBody ResponseBody responseBody) {
+        lineService.saveCallBack(responseBody);
     }
 }

@@ -8,15 +8,14 @@ import com.main.repository.LineMessageLogRepository;
 import com.main.service.LineService;
 import com.main.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +28,27 @@ public class LineServiceImpl implements LineService {
         LineRequestBody lineRequestBody = getLineRequestBody();
 
         RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = createHeadersWithBearerToken();
+        HttpEntity<LineRequestBody> request = new HttpEntity<>(lineRequestBody, headers);
+        restTemplate.exchange(URLProperties.PUSH, HttpMethod.POST, request, LineRequestBody.class);
+    }
+
+    public static HttpHeaders createHeadersWithBearerToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(INFOProperties.CHANNEL_ACCESS_TOKEN);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<LineRequestBody> request = new HttpEntity<>(lineRequestBody, headers);
-        restTemplate.postForEntity(URLProperties.PUSH, request, LineRequestBody.class);
+        return headers;
     }
 
     @Override
     public void saveCallBack(ResponseBody responseBody) {
         List<LineMessageLog> aa = lineMessageLogRepository.findAll();
+        HttpHeaders headers = createHeadersWithBearerToken();
         responseBody.getEvents().forEach(event -> {
-            ResponseEntity<UserProfile> responseEntity = new RestTemplate().getForEntity(URLProperties.PROFILE + responseBody.getEvents(), UserProfile.class);
+            HttpEntity<String> request = new HttpEntity<>(event.getSource().getUserId(), headers);
+            ResponseEntity<UserProfile> responseEntity = new RestTemplate().exchange(URLProperties.PROFILE, HttpMethod.GET, request, UserProfile.class, Map.of("userId",
+                    event.getSource().getUserId()));
 
         });
     }
