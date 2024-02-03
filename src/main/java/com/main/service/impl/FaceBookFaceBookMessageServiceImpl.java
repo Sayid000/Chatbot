@@ -58,63 +58,6 @@ public class FaceBookFaceBookMessageServiceImpl implements FaceBookMessageServic
         return headers;
     }
 
-//    @Override
-//    public void saveCallBack(ResponseBody responseBody) {
-//        HttpHeaders headers = createHeadersWithBearerToken();
-//        if (responseBody == null || responseBody.getEvents().isEmpty()) {
-//            return;
-//        }
-//        HttpEntity<String> request = new HttpEntity<>(responseBody.getEvents().getFirst().getSource().getUserId(), headers);
-//        UserProfile responseEntity = new RestTemplate().exchange(URLProperties.PROFILE, HttpMethod.GET, request, UserProfile.class, Map.of("userId",
-//                responseBody.getEvents().getFirst().getSource().getUserId())).getBody();
-//
-//        assert responseEntity != null;
-//        boolean isUserIdExists = userRepository.existsByUserId(responseEntity.getUserId());
-//        User user;
-//        if (!isUserIdExists) {
-//            user = new User();
-//            user.setUserId(responseEntity.getUserId());
-//            user.setUserName(responseEntity.getDisplayName());
-//            user.setPlatform("line");
-//            userRepository.save(user);
-//        } else {
-//            user = userRepository.findByUserId(responseEntity.getUserId())
-//                    .orElseThrow();
-//        }
-//
-//        List<Message> messageList = new ArrayList<>();
-//        responseBody.getEvents().forEach(event -> {
-//            if (event.getMessage() == null) {
-//                return;
-//            }
-//            Message message = new Message();
-//            message.setUser(user);
-//            message.setType(event.getMessage().getType());
-//            message.setContent(event.getMessage().getText());
-//            Instant instant = Instant.ofEpochMilli(event.getTimestamp());
-//            LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-//            message.setCreateDateTime(localDateTime);
-//            messageList.add(message);
-//        });
-//        messageRepository.saveAll(messageList);
-//    }
-//
-//    @Override
-//    public List<ConversationHistory> getConversationHistory(String userId) {
-//        List<Message> messageList;
-//        if (StringUtils.isEmpty(userId)) {
-//            messageList = messageRepository.findAll();
-//        } else {
-//            messageList = messageRepository.findByUser_UserId(userId);
-//        }
-//        return messageList.stream().map(message -> ConversationHistory.builder()
-//                .userId(message.getUser().getUserId())
-//                .userName(message.getUser().getUserName())
-//                .platform(message.getUser().getPlatform())
-//                .type(message.getType())
-//                .content(message.getContent())
-//                .build()).collect(Collectors.toList());
-//    }
 
     private static FaceBookMessageRequestBody getFaceBookMessageRequestBody() {
         FaceBookMessageRequestBody faceBookMessageRequestBody = new FaceBookMessageRequestBody();

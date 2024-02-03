@@ -24,9 +24,12 @@ public class SendController {
             switch (type) {
                 case SendMessage.LINE:
                     lineService.sendLineMessage();
+                    break;
                 case SendMessage.FACEBOOK:
                     faceBookMessageService.sendFaceBookMessage();
+                    break;
                 case SendMessage.WHATSAPP:
+                    break;
             }
         });
     }
