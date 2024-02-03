@@ -55,6 +55,9 @@ public class LineServiceImpl implements LineService {
     @Override
     public void saveCallBack(ResponseBody responseBody) {
         HttpHeaders headers = createHeadersWithBearerToken();
+        if (responseBody == null || responseBody.getEvents().isEmpty()) {
+            return;
+        }
         HttpEntity<String> request = new HttpEntity<>(responseBody.getEvents().getFirst().getSource().getUserId(), headers);
         UserProfile responseEntity = new RestTemplate().exchange(URLProperties.PROFILE, HttpMethod.GET, request, UserProfile.class, Map.of("userId",
                 responseBody.getEvents().getFirst().getSource().getUserId())).getBody();

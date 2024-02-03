@@ -14,3 +14,8 @@ spring:
 
 server:
   port: 9090
+
+root:
+  level: error
+  appender-ref:
+    - ref: CONSOLE
