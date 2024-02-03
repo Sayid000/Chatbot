@@ -13,6 +13,7 @@ public class ImageProperties {
 
     public static String PUSH_IMAGE;
     public static String TEMPLATE_IMAGE;
+    public static String PNG;
 
     public void setPushImage(String pushImage) {
         ImageProperties.PUSH_IMAGE = pushImage;
@@ -20,5 +21,9 @@ public class ImageProperties {
 
     public void setTemplateImage(String templateImage) {
         ImageProperties.TEMPLATE_IMAGE = templateImage;
+    }
+
+    public void setPNG(String png) {
+        ImageProperties.PNG = png;
     }
 }

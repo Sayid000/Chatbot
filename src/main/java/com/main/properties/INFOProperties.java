@@ -11,14 +11,24 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class INFOProperties {
 
-    public static String CHANNEL_ACCESS_TOKEN;
-    public static String USER_ID;
+    public static String LINE_CHANNEL_ACCESS_TOKEN;
+    public static String LINE_USER_ID;
+    public static String MESSAGE_PAGE_ACCESS_TOKEN;
+    public static String MESSAGE_PSID;
 
-    public void setChannelAccessToken(String channelAccessToken) {
-        INFOProperties.CHANNEL_ACCESS_TOKEN = channelAccessToken;
+    public void setLineChannelAccessToken(String lineChannelAccessToken) {
+        INFOProperties.LINE_CHANNEL_ACCESS_TOKEN = lineChannelAccessToken;
     }
 
-    public void setUserID(String userID) {
-        INFOProperties.USER_ID = userID;
+    public void setLineUserID(String lineUserID) {
+        INFOProperties.LINE_USER_ID = lineUserID;
+    }
+
+    public void setMessagePageAccessToken(String messagePageAccessToken) {
+        INFOProperties.MESSAGE_PAGE_ACCESS_TOKEN = messagePageAccessToken;
+    }
+
+    public void setMessagePSID(String MessagePSID) {
+        INFOProperties.MESSAGE_PSID = MessagePSID;
     }
 }

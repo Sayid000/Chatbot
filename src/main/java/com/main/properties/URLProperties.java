@@ -11,19 +11,24 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class URLProperties {
 
-    public static String PUSH;
-    public static String REPLY;
-    public static String PROFILE;
+    public static String LINE_PUSH;
+    public static String LINE_REPLY;
+    public static String LINE_PROFILE;
+    public static String MESSAGE_PUSH;
 
-    public void setPush(String push) {
-        URLProperties.PUSH = push;
+    public void setLinePush(String linePush) {
+        URLProperties.LINE_PUSH = linePush;
     }
 
-    public void setReply(String reply) {
-        URLProperties.REPLY = reply;
+    public void setLineReply(String lineReply) {
+        URLProperties.LINE_REPLY = lineReply;
     }
 
-    public void setProfile(String profile) {
-        URLProperties.PROFILE = profile;
+    public void setLineProfile(String lineProfile) {
+        URLProperties.LINE_PROFILE = lineProfile;
+    }
+
+    public void setMessagePush(String messagePush) {
+        URLProperties.MESSAGE_PUSH = messagePush;
     }
 }

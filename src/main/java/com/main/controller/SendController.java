@@ -1,5 +1,6 @@
 package com.main.controller;
 
+import com.main.service.FaceBookMessageService;
 import com.main.service.LineService;
 import com.main.vo.ConversationHistory;
 import com.main.vo.ResponseBody;
@@ -15,6 +16,7 @@ import java.util.List;
 public class SendController {
 
     private final LineService lineService;
+    private final FaceBookMessageService faceBookMessageService;
 
     @PostMapping
     public void sendMessage(@RequestBody SendMessage sendMessage) {
@@ -23,7 +25,7 @@ public class SendController {
                 case SendMessage.LINE:
                     lineService.sendLineMessage();
                 case SendMessage.FACEBOOK:
-
+                    faceBookMessageService.sendFaceBookMessage();
                 case SendMessage.WHATSAPP:
             }
         });
@@ -32,6 +34,11 @@ public class SendController {
     @PostMapping("/callback")
     public void callback(@RequestBody ResponseBody responseBody) {
         lineService.saveCallBack(responseBody);
+    }
+
+    @GetMapping("/webhooks")
+    public ResponseEntity<String> webhook(@RequestParam("hub.challenge") String challenge) {
+        return ResponseEntity.ok(challenge);
     }
 
     @GetMapping

@@ -41,12 +41,12 @@ public class LineServiceImpl implements LineService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = createHeadersWithBearerToken();
         HttpEntity<LineRequestBody> request = new HttpEntity<>(lineRequestBody, headers);
-        restTemplate.exchange(URLProperties.PUSH, HttpMethod.POST, request, LineRequestBody.class);
+        restTemplate.exchange(URLProperties.LINE_PUSH, HttpMethod.POST, request, LineRequestBody.class);
     }
 
     public static HttpHeaders createHeadersWithBearerToken() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(INFOProperties.CHANNEL_ACCESS_TOKEN);
+        headers.setBearerAuth(INFOProperties.LINE_CHANNEL_ACCESS_TOKEN);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
@@ -59,7 +59,7 @@ public class LineServiceImpl implements LineService {
             return;
         }
         HttpEntity<String> request = new HttpEntity<>(responseBody.getEvents().getFirst().getSource().getUserId(), headers);
-        UserProfile responseEntity = new RestTemplate().exchange(URLProperties.PROFILE, HttpMethod.GET, request, UserProfile.class, Map.of("userId",
+        UserProfile responseEntity = new RestTemplate().exchange(URLProperties.LINE_PROFILE, HttpMethod.GET, request, UserProfile.class, Map.of("userId",
                 responseBody.getEvents().getFirst().getSource().getUserId())).getBody();
 
         assert responseEntity != null;
@@ -112,20 +112,20 @@ public class LineServiceImpl implements LineService {
 
     private static LineRequestBody getLineRequestBody() {
         LineRequestBody lineRequestBody = new LineRequestBody();
-        lineRequestBody.setTo(INFOProperties.USER_ID);
+        lineRequestBody.setTo(INFOProperties.LINE_USER_ID);
 
         List<LineMessage> lineMessages = new ArrayList<>() {{
-            add(new LineMessage(LineMessage.TYPE_TEXT, "測試文字訊息"));
-            add(new LineMessage(LineMessage.TYPE_IMAGE, ImageProperties.PUSH_IMAGE, ImageProperties.PUSH_IMAGE));
-            add(new LineMessage(LineMessage.TYPE_TEMPLATE, "This is a buttons altText",
+            add(new LineMessage("text", "測試文字訊息"));
+            add(new LineMessage("image", ImageProperties.PUSH_IMAGE, ImageProperties.PUSH_IMAGE));
+            add(new LineMessage("template", "This is a buttons altText",
                     Template.builder()
                             .type("buttons")
                             .thumbnailImageUrl(ImageProperties.TEMPLATE_IMAGE)
                             .imageAspectRatio("rectangle")
                             .imageSize("cover")
                             .imageBackgroundColor("#FFFFFF")
-                            .title("請填寫個人資料")
-                            .text("請選擇你要輸入的資料項目")
+                            .title("大標題")
+                            .text("小標題")
                             .actions(new ArrayList<>() {{
                                 add(Actions.builder().type("message").label("請按我").text("你按到我了").build());
                                 add(Actions.builder().type("postback").label("點擊觸發").data("action=buy&itemid=123").build());

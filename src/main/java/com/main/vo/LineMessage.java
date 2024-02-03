@@ -9,10 +9,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LineMessage {
 
-    public static final String TYPE_TEXT = "text";
-    public static final String TYPE_IMAGE = "image";
-    public static final String TYPE_TEMPLATE = "template";
-
     private String type;
     private String text;
     private String originalContentUrl;
