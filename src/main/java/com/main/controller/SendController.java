@@ -44,7 +44,7 @@ public class SendController {
         return ResponseEntity.ok(challenge);
     }
 
-    @GetMapping
+    @GetMapping("/getLineConversation")
     public ResponseEntity<List<ConversationHistory>> getConversationHistory(@RequestParam String userId) {
         return ResponseEntity.ok().body(lineService.getConversationHistory(userId));
     }
